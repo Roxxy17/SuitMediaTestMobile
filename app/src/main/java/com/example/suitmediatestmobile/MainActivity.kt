@@ -27,19 +27,17 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun NavigationHost() {
     val navController = rememberNavController()
+    val userViewModel: UserViewModel = hiltViewModel()
 
     NavHost(navController = navController, startDestination = "first") {
         composable("first") {
-            val userViewModel: UserViewModel = hiltViewModel()
-            FirstScreen(navController, userViewModel)
+            FirstScreen(navController = navController, viewModel = userViewModel)
         }
         composable("second") {
-            val userViewModel: UserViewModel = hiltViewModel()
-            SecondScreen(navController, userViewModel)
+            SecondScreen(navController = navController, viewModel = userViewModel)
         }
         composable("third") {
-            val userViewModel: UserViewModel = hiltViewModel()
-            ThirdScreen(navController, userViewModel)
+            ThirdScreen(navController = navController, viewModel = userViewModel)
         }
     }
 }

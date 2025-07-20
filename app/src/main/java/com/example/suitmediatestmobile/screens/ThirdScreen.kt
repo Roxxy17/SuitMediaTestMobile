@@ -26,6 +26,8 @@ fun ThirdScreen(navController: NavController, viewModel: UserViewModel) {
     val scope = rememberCoroutineScope()
     val isRefreshing = remember { mutableStateOf(false) }
 
+    val userList by viewModel.userList.collectAsState()
+
     LaunchedEffect(Unit) {
         viewModel.loadUsers()
     }
@@ -41,7 +43,7 @@ fun ThirdScreen(navController: NavController, viewModel: UserViewModel) {
         }
     ) {
         LazyColumn {
-            items(viewModel.userList) { user ->
+            items(userList) { user ->
                 ListItem(
                     headlineContent = { Text("${user.first_name} ${user.last_name}") },
                     supportingContent = { Text(user.email) },
@@ -49,22 +51,19 @@ fun ThirdScreen(navController: NavController, viewModel: UserViewModel) {
                         AsyncImage(
                             model = user.avatar,
                             contentDescription = null,
-                            modifier = Modifier.size(48.dp).clip(CircleShape)
+                            modifier = Modifier
+                                .size(48.dp)
+                                .clip(CircleShape)
                         )
                     },
                     modifier = Modifier.clickable {
-                        viewModel.selectedUser = "${user.first_name} ${user.last_name}"
+                        viewModel.updateSelectedUser("${user.first_name} ${user.last_name}")
                         navController.popBackStack()
                     }
                 )
                 Divider()
             }
-
-            item {
-                LaunchedEffect(Unit) {
-                    viewModel.loadUsers()
-                }
-            }
         }
     }
 }
+

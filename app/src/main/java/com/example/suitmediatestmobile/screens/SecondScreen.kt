@@ -5,11 +5,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -17,7 +18,8 @@ import com.example.suitmediatestmobile.viewmodel.UserViewModel
 
 @Composable
 fun SecondScreen(navController: NavController, viewModel: UserViewModel) {
-    val context = LocalContext.current
+    val name by viewModel.name.collectAsState()
+    val selectedUser by viewModel.selectedUser.collectAsState()
 
     Column(
         modifier = Modifier
@@ -27,16 +29,12 @@ fun SecondScreen(navController: NavController, viewModel: UserViewModel) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = "Welcome",
-            fontWeight = FontWeight.Light,
-            color = Color.White
-        )
+        Text(text = "Welcome", fontWeight = FontWeight.Light, color = Color.White)
 
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = viewModel.name.ifEmpty { "Your Name" },
+            text = if (name.isNotEmpty()) name else "Your Name",
             fontWeight = FontWeight.Bold,
             color = Color.White
         )
@@ -44,7 +42,7 @@ fun SecondScreen(navController: NavController, viewModel: UserViewModel) {
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            text = viewModel.selectedUser.ifEmpty { "Selected User Name" },
+            text = if (selectedUser.isNotEmpty()) selectedUser else "Selected User Name",
             fontWeight = FontWeight.Bold,
             color = Color.White
         )

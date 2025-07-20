@@ -9,6 +9,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -21,6 +23,9 @@ import com.example.suitmediatestmobile.viewmodel.UserViewModel
 fun FirstScreen(navController: NavController, viewModel: UserViewModel) {
     val context = LocalContext.current
 
+    val name by viewModel.name.collectAsState()
+    val palindrome by viewModel.palindrome.collectAsState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -29,13 +34,14 @@ fun FirstScreen(navController: NavController, viewModel: UserViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         OutlinedTextField(
-            value = viewModel.name,
-            onValueChange = { viewModel.name = it },
+            value = name,
+            onValueChange = { viewModel.updateName(it) },
             label = { Text("Name") }
         )
+
         OutlinedTextField(
-            value = viewModel.palindrome,
-            onValueChange = { viewModel.palindrome = it },
+            value = palindrome,
+            onValueChange = { viewModel.updatePalindrome(it) },
             label = { Text("Palindrome") }
         )
 
